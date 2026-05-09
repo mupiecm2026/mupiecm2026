@@ -1,26 +1,28 @@
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { authService } from "../../../../lib/services/auth-service";
+import { jwtVerify } from "jose";
 
-export async function GET() {
+const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
+
+export async function GET(req: Request) {
   try {
-    const cookieStore = await cookies();
-    const sessionCookie = cookieStore.get("mupi_session")?.value;
-    if (!sessionCookie) {
+    const cookie = req.headers.get("cookie") || "";
+    const token = cookie
+      .split(";")
+      .find(c => c.trim().startsWith("mupi_session="))
+      ?.split("=")[1];
+
+    if (!token) {
       return NextResponse.json({ user: null });
     }
 
-    const session = await authService.getSession(sessionCookie);
-    if (!session) {
-      return NextResponse.json({ user: null });
-    }
+    const { payload } = await jwtVerify(token, secret);
 
-    const user = await authService.getUserByEmail(session.email);
-    if (!user) {
-      return NextResponse.json({ user: null });
-    }
-
-    return NextResponse.json({ user: { email: user.email, role: user.role } });
+    return NextResponse.json({
+      user: {
+        email: payload.email,
+        role: payload.role,
+      },
+    });
   } catch {
     return NextResponse.json({ user: null });
   }

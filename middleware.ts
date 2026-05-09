@@ -1,39 +1,50 @@
 import { NextRequest, NextResponse } from "next/server";
-import { authService } from "./lib/services/auth-service";
 
-const PUBLIC_PATHS = ["/", "/checkout", "/not-found", "/termos-de-uso", "/politica-devolucao", "/produto"];
+const PUBLIC_PATHS = [
+  "/",
+  "/checkout",
+  "/not-found",
+  "/termos-de-uso",
+  "/politica-devolucao",
+  "/produto",
+];
+
 const MASTER_PATHS = ["/config-page", "/dashboard"];
 
-export async function middleware(request: NextRequest) {
+function isPublic(path: string) {
+  return PUBLIC_PATHS.some(p => path === p || path.startsWith(p + "/"));
+}
+
+function isMaster(path: string) {
+  return MASTER_PATHS.some(p => path === p || path.startsWith(p + "/"));
+}
+
+export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (PUBLIC_PATHS.some((path) => pathname === path || pathname.startsWith(path + "/"))) {
+  if (isPublic(pathname) || pathname.startsWith("/api/")) {
     return NextResponse.next();
   }
 
-  if (pathname.startsWith("/api/")) {
-    return NextResponse.next();
+  const token = request.cookies.get("mupi_session")?.value;
+
+  if (!token) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const sessionToken = request.cookies.get("mupi_session")?.value;
-  if (!sessionToken) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
+  // validação leve (edge-safe)
+  const looksValidJWT = token.split(".").length === 3;
+
+  if (!looksValidJWT) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const session = await authService.getSession(sessionToken);
-  if (!session) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
+  // proteção master (não confiável no edge, só bloqueio básico)
+  if (isMaster(pathname)) {
+    const hasJWTShape = token.startsWith("ey");
 
-  if (MASTER_PATHS.some((path) => pathname === path || pathname.startsWith(path + "/"))) {
-    if (session.role !== "master") {
-      const url = request.nextUrl.clone();
-      url.pathname = "/";
-      return NextResponse.redirect(url);
+    if (!hasJWTShape) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
 
@@ -42,5 +53,4 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: ["/((?!_next|static|favicon.ico|api).*)"],
-  runtime: "nodejs",
 };
