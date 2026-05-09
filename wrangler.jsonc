@@ -1,0 +1,42 @@
+/**
+ * FILE: wrangler.jsonc
+ * UPDATED: 2026-04-17
+ * FIX:
+ * - Added KV namespace binding (PROD_KV_STORAGE)
+ * - Ensures production uses Cloudflare KV instead of Dev fallback
+ */
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"main": ".open-next/worker.js",
+	"name": "mupi",
+	"compatibility_date": "2026-04-17",
+	"compatibility_flags": [
+		"nodejs_compat",
+		"global_fetch_strictly_public"
+	],
+	"assets": {
+		"directory": ".open-next/assets",
+		"binding": "ASSETS"
+	},
+	"vars": {
+    "APP_ENV": "production",
+	"NEXT_PUBLIC_PRODUCTS_URL": "https://dummyjson.com",
+	"DOMAIN_URL": ""
+  	},
+	"kv_namespaces": [
+		{
+			"binding": "PROD_KV_STORAGE",
+			"id": "772dd974514a4232bf940eead42ca260"
+		}
+	],
+	"triggers": {
+		"crons": [
+			{
+				"cron": "0 0 * * *"
+			}
+		]
+	},
+	"images": {
+		"binding": "IMAGES"
+	}
+}

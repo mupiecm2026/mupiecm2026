@@ -1,0 +1,203 @@
+/* mupi\app\globals.css */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Variáveis de tema: serão trocadas pelas classes .theme-light / .theme-dark */
+:root {
+  --font-sans: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+
+  /* Light (default) */
+  --bg: #ebebeb;
+  --paper: #FFFFFF;
+  --text-primary: #1A1A1A;
+  --text-secondary: #555555;
+
+  --primary: #2D9CDB;
+  --primary-hover: #1B7CB5;
+
+  --secondary: #27AE60;
+  --secondary-hover: #1E874B;
+
+  --error: #EB5757;
+  --error-hover: #C0392B;
+
+  --warning: #F2994A;
+  --warning-hover: #D35400;
+
+  --border: #E0E0E0;
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+/* Dark mode variables */
+.theme-dark {
+  --bg: #121212;
+  --paper: #1E1E1E;
+  --text-primary: #F5F5DC; /* branco creme */
+  --text-secondary: #CCCCCC;
+
+  --primary: #2D9CDB;
+  --primary-hover: #1B7CB5;
+
+  --secondary: #27AE60;
+  --secondary-hover: #1E874B;
+
+  --error: #EB5757;
+  --error-hover: #C0392B;
+
+  --warning: #F2994A;
+  --warning-hover: #D35400;
+
+  --border: #333333;
+  --card-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+
+/* Estilos base usando Tailwind + vars */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--bg);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Cores utilitárias mapeadas para classes de Tailwind existentes */
+  .bg-background { background-color: var(--bg); }
+  .bg-paper { background-color: var(--paper); }
+  .text-textPrimary { color: var(--text-primary); }
+  .text-textSecondary { color: var(--text-secondary); }
+
+  .border-base { border-color: var(--border); }
+
+  /* Botões */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors;
+  }
+  .btn-primary {
+    background-color: var(--primary);
+    color: #FFFFFF;
+  }
+  .btn-primary:hover { background-color: var(--primary-hover); }
+
+  .btn-secondary {
+    background-color: var(--secondary);
+    color: #FFFFFF;
+  }
+  .btn-secondary:hover { background-color: var(--secondary-hover); }
+
+  .btn-outline {
+    background-color: transparent;
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover {
+    border-color: var(--primary);
+    color: var(--text-primary);
+  }
+
+  /* Campos de formulário */
+  .input {
+    @apply w-full rounded-md px-3 py-2 text-sm outline-none transition;
+    background-color: var(--paper);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .input::placeholder {
+    color: var(--text-secondary);
+  }
+  .input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 20%, transparent);
+  }
+
+  /* Barra de pesquisa (centralizada na home) */
+  .search-bar {
+    @apply w-full max-w-2xl rounded-full px-4 py-3 text-sm shadow-sm;
+    background-color: var(--paper);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+  }
+  .search-bar:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 18%, transparent);
+  }
+
+  /* Cards (produtos, pagamento, endereço) */
+  .card {
+    @apply rounded-xl p-4;
+    background-color: var(--paper);
+    color: var(--text-primary);
+    border: 1px solid var(--border);
+    box-shadow: var(--card-shadow);
+  }
+  .card-hover {
+    transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-1px);
+    border-color: var(--primary);
+    box-shadow: 0 6px 20px color-mix(in oklab, var(--primary) 15%, rgba(0,0,0,0.25));
+  }
+
+  /* Preço em destaque */
+  .price {
+    color: var(--secondary);
+    font-weight: 600;
+  }
+
+  /* Estados de feedback */
+  .tag-success { background-color: var(--secondary); color: #FFFFFF; }
+  .tag-error   { background-color: var(--error); color: #FFFFFF; }
+  .tag-warning { background-color: var(--warning); color: #FFFFFF; }
+
+  /* Foco acessível para elementos clicáveis */
+  :where(button, a, [role="button"], .btn) {
+    outline: none;
+  }
+  :where(button, a, [role="button"], .btn):focus-visible {
+    box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 22%, transparent);
+  }
+
+  /* Scrollbar estilizado */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-track {
+    background: color-mix(in oklab, var(--bg) 90%, #000 10%);
+  }
+  *::-webkit-scrollbar-thumb {
+    background: color-mix(in oklab, var(--primary) 65%, #000 35%);
+    border-radius: 10px;
+    border: 2px solid color-mix(in oklab, var(--bg) 85%, #000 15%);
+  }
+}
+
+/* Utilitários de layout rápidos */
+@layer components {
+  .navbar {
+    @apply w-full border-b;
+    background-color: var(--paper);
+    border-color: var(--border);
+  }
+  .container-page {
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+  .grid-products {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+  }
+}
