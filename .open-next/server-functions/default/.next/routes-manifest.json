@@ -1,0 +1,220 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "onMatchHeaders": [],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/products/[id]",
+      "regex": "^/api/products/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/products/(?<nxtPid>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/[gateway]",
+      "regex": "^/api/webhooks/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPgateway": "nxtPgateway"
+      },
+      "namedRegex": "^/api/webhooks/(?<nxtPgateway>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/produto/[id]",
+      "regex": "^/produto/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/produto/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/api/auth/login",
+      "regex": "^/api/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/login(?:/)?$"
+    },
+    {
+      "page": "/api/auth/logout",
+      "regex": "^/api/auth/logout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/logout(?:/)?$"
+    },
+    {
+      "page": "/api/auth/me",
+      "regex": "^/api/auth/me(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/me(?:/)?$"
+    },
+    {
+      "page": "/api/auth/register",
+      "regex": "^/api/auth/register(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/register(?:/)?$"
+    },
+    {
+      "page": "/api/cashback/cashout",
+      "regex": "^/api/cashback/cashout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cashback/cashout(?:/)?$"
+    },
+    {
+      "page": "/api/cashback/list",
+      "regex": "^/api/cashback/list(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cashback/list(?:/)?$"
+    },
+    {
+      "page": "/api/cashback/verify",
+      "regex": "^/api/cashback/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cashback/verify(?:/)?$"
+    },
+    {
+      "page": "/api/cron",
+      "regex": "^/api/cron(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron(?:/)?$"
+    },
+    {
+      "page": "/api/health/gateway",
+      "regex": "^/api/health/gateway(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/gateway(?:/)?$"
+    },
+    {
+      "page": "/api/health/psp/efipay",
+      "regex": "^/api/health/psp/efipay(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/health/psp/efipay(?:/)?$"
+    },
+    {
+      "page": "/api/nf/download",
+      "regex": "^/api/nf/download(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/nf/download(?:/)?$"
+    },
+    {
+      "page": "/api/nf/list",
+      "regex": "^/api/nf/list(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/nf/list(?:/)?$"
+    },
+    {
+      "page": "/api/payments",
+      "regex": "^/api/payments(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/payments(?:/)?$"
+    },
+    {
+      "page": "/api/vault",
+      "regex": "^/api/vault(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/vault(?:/)?$"
+    },
+    {
+      "page": "/cashback",
+      "regex": "^/cashback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/cashback(?:/)?$"
+    },
+    {
+      "page": "/checkout",
+      "regex": "^/checkout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/checkout(?:/)?$"
+    },
+    {
+      "page": "/config-page",
+      "regex": "^/config\\-page(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/config\\-page(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/favoritos",
+      "regex": "^/favoritos(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favoritos(?:/)?$"
+    },
+    {
+      "page": "/not-found",
+      "regex": "^/not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/not\\-found(?:/)?$"
+    },
+    {
+      "page": "/politica-devolucao",
+      "regex": "^/politica\\-devolucao(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/politica\\-devolucao(?:/)?$"
+    },
+    {
+      "page": "/termos-de-uso",
+      "regex": "^/termos\\-de\\-uso(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/termos\\-de\\-uso(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

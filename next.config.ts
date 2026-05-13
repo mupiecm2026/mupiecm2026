@@ -5,12 +5,28 @@ import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
 initOpenNextCloudflareForDev();
 
 const nextConfig: NextConfig = {
-  /* config options here */
   /** @type {import('next').NextConfig} */
   reactStrictMode: true,
   images: {
-      unoptimized: true,
-    }
+    unoptimized: true,
+  },
+  turbopack: {
+    rules: {
+      "**/*.ttf": {
+        type: "asset",
+      },
+    },
+  },
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.ttf$/i,
+      type: "asset/resource",
+      generator: {
+        filename: "static/fonts/[name][ext]",
+      },
+    });
+    return config;
+  },
 };
 
 export default nextConfig;
