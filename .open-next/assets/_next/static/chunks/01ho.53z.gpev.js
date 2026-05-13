@@ -1,1 +1,0 @@
-(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,90513,e=>{"use strict";e.s(["createIdempotencyContext",0,function(e){let t=`idemp_${crypto.randomUUID()}`,o=`req_${crypto.randomUUID()}`;return{headers:{"X-Idempotency-Key":t,"X-Request-ID":o},idempotencyKey:t,requestId:o}}])}]);

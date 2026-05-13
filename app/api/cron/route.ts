@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { CashbackService } from "../../../lib/services/cashback-service";
+import { CashbackService } from "../../../lib/services/sales/cashback/cashback-service";
 import { logger } from "../../../lib/utils/logger";
 
 function getEnv(): any {

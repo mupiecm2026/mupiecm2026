@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import NFService from "../../../../lib/services/nf/nf-service";
+import NFService from "../../../../lib/services/sales/nf/nf-service";
 
 function getEnv(): any {
   const env =

@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PaymentProcessor } from "../../../lib/services/payment-processor";
-import { GatewayConfigService } from "../../../lib/services/gateway-config-service";
-import { CashbackService } from "../../../lib/services/cashback-service";
-import { NFService } from "../../../lib/services/nf/nf-service";
-import { IdempotencyService } from "../../../lib/services/idempotency-service";
+import { PaymentProcessor } from "../../../lib/services/payments/gateways/interface/payment-processor";
+import { CashbackService } from "../../../lib/services/sales/cashback/cashback-service";
+import { IdempotencyService } from "../../../lib/services/payments/enrich-payment/idempotency-service";
 import { logger } from "../../../lib/utils/logger";
-import { sendPaymentNotificationEmail } from "../../../lib/services/email-service";
+import { sendPaymentNotificationEmail } from "../../../lib/services/mails/email-service";
+import { GatewayConfigService } from "../../../lib/services/payments/gateways/configurations/gateway-config-service";
+import NFService from "../../../lib/services/sales/nf/nf-service";
+
 
 function getEnv(): any {
   const env =

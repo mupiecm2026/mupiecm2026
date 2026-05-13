@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { JWTService, JWTPayload } from '../utils/jwt';
-import { authService } from '../services/auth-service';
+import { authService } from '../services/auth/auth-service';
 
 export interface AuthenticatedRequest extends NextRequest {
   user?: JWTPayload;

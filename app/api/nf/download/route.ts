@@ -1,7 +1,6 @@
 // app\api\nf\download\route.ts
 import { NextRequest, NextResponse } from "next/server";
-import NFService from "../../../../lib/services/nf/nf-service";
-
+import NFService from "../../../../lib/services/sales/nf/nf-service";
 export const runtime = 'edge';
 
 function getEnv(): any {

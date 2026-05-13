@@ -14,9 +14,9 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
-import CategoryCarousel from "../components/CategoryCarousel";
-import HeroSearch from "../components/HeroSearch";
-import ProductFilters from "../components/ProductFilters";
+import CategoryCarousel from "../components/Products/CategoryCarousel";
+import HeroSearch from "../components/Layout/HeroSearch";
+import ProductFilters from "../components/Products/ProductFilters";
 
 /**
  * Página Home
@@ -40,7 +40,7 @@ export default function HomePage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const EXCLUDED_CATEGORIES = ["alimentícios", "alimenticios", "alimentos"];
+  const EXCLUDED_CATEGORIES = ["groceries", "furniture" ];
 
   // Sorting
   const [sortBy, setSortBy] = useState<string>("title");
@@ -49,7 +49,7 @@ export default function HomePage() {
   const [page, setPage] = useState(1);
   const itemsPerPage = 20;
 
-  const productsUrl = `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/products?limit=150`;
+  const productsUrl = `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/products?limit=200`;
 
   useEffect(() => {
     const loadProducts = async () => {

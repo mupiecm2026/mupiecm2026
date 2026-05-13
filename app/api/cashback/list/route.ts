@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authService } from '../../../../lib/services/auth-service';
+import { authService } from '../../../../lib/services/auth/auth-service';
 import { logger } from '../../../../lib/utils/logger';
 
 function getSessionToken(request: NextRequest) {

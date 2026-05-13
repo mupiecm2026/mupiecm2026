@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Box, Button, Card, CardContent, CardMedia, Container, Grid, Typography } from "@mui/material";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/Authentication/AuthContext";
 import { FavoriteProduct, getFavorites, removeFavorite } from "../../lib/utils/favorites";
 
 export default function FavoritesPage() {

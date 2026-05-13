@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { GatewayConfigService } from '../../../../../lib/services/gateway-config-service';
 import { logger } from '../../../../../lib/utils/logger';
+import { GatewayConfigService } from '../../../../../lib/services/payments/gateways/configurations/gateway-config-service';
 
 function getService(context: any) {
 const env = context.env;

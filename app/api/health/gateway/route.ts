@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { HealthService } from "../../../../lib/services/health-service";
-import { GatewayConfigService } from "../../../../lib/services/gateway-config-service";
+import { HealthService } from "../../../../lib/services/health/health-service";
 import { GatewayNames } from "../../../../types/types";
 import { logger } from "../../../../lib/utils/logger";
+import { GatewayConfigService } from "../../../../lib/services/payments/gateways/configurations/gateway-config-service";
 
 
 export async function GET(request: NextRequest, context: any) {

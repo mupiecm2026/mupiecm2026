@@ -3,12 +3,12 @@
 import "./globals.css";
 import Script from "next/script";
 
-import { ThemeProvider } from "../context/ThemeContext";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
-import { CartProvider } from "../context/CartContext";
+import { ThemeProvider } from "../context/Layout/ThemeContext";
+import Navbar from "../components/Layout/Navbar";
+import { CartProvider } from "../context/Products/CartContext";
 import { NotificationProvider } from "../context/NotificationContext";
-import { AuthProvider } from "../context/AuthContext";
+import { AuthProvider } from "../context/Authentication/AuthContext";
+import Footer from "../components/Layout/Footer";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

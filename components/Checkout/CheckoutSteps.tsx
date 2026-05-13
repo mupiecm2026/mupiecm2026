@@ -6,7 +6,7 @@ import CheckoutAddress from "./CheckoutAddress";
 import CheckoutPaymentForm from "./CheckoutPaymentForm";
 import { useRouter } from "next/navigation";
 import { Box, Button, Typography } from "@mui/material";
-import { useCart } from "../../context/CartContext";
+import { useCart } from "../../context/Products/CartContext";
 import { CheckoutPayload, GatewayNames, PaymentInput } from "../../types/types";
 
 export default function CheckoutSteps() {

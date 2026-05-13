@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { createKVStore } from "./lib/services/kv/kv-store.factory";
 
 const PUBLIC_PATHS = [
   "/",
@@ -7,6 +8,7 @@ const PUBLIC_PATHS = [
   "/termos-de-uso",
   "/politica-devolucao",
   "/produto",
+  "/favoritos",
 ];
 
 const MASTER_PATHS = ["/config-page", "/dashboard", "/cashback"];
@@ -21,19 +23,19 @@ function isMaster(path: string) {
 
 async function validateSession(token: string): Promise<{ role: string } | null> {
   try {
-    // Call the /api/auth/me endpoint to validate session
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/auth/me`, {
-      headers: {
-        'Cookie': `mupi_session=${token}`,
-      },
-    });
-
-    if (!response.ok) {
+    const env = (globalThis as any).__ENV__ || (globalThis as any).process?.env || null;
+    const kv = await createKVStore(env);
+    const raw = await kv.get(`session:${token}`);
+    
+    if (!raw) return null;
+    
+    const session = JSON.parse(raw);
+    if (session.expiresAt && new Date(session.expiresAt) <= new Date()) {
+      await kv.delete(`session:${token}`);
       return null;
     }
-
-    const data : any = await response.json();
-    return data.user ? { role: data.user.role } : null;
+    
+    return { role: session.role };
   } catch (error) {
     console.error('Session validation error:', error);
     return null;

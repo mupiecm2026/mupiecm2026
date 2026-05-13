@@ -12,11 +12,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  Card,
-  CardContent,
-  CardMedia,
   CircularProgress,
-  Paper,
   IconButton,
 } from "@mui/material";
 import {
@@ -28,11 +24,11 @@ import {
   Search,
 } from "@mui/icons-material";
 import Link from "next/link";
-import ProductCard from "../../../components/ProductCard";
-import { useCart } from "../../../context/CartContext";
-import { useAuth } from "../../../context/AuthContext";
+import { useCart } from "../../../context/Products/CartContext";
+import { useAuth } from "../../../context/Authentication/AuthContext";
 import { getFavorites, toggleFavorite, isProductFavorited } from "../../../lib/utils/favorites";
 import { logger } from "../../../lib/utils/logger";
+import ProductCard from "../../../components/Products/ProductCard";
 
 const defaultSimilarProducts = [
   { id: 2, title: "Produto Similar 1", price: 89.99, image: "https://via.placeholder.com/300x300?text=Similar+1" },
@@ -258,8 +254,8 @@ export default function ProductDetails() {
                   alt={product.title}
                   style={{
                     width: "100%",
-                    height: 500,
-                    objectFit: "cover",
+                    height: 550,
+                    objectFit: "contain",
                     transition: "transform 0.3s ease",
                   }}
                 />
@@ -315,12 +311,12 @@ export default function ProductDetails() {
                     </Typography>
                   )}
                 </Box>
-                <Box sx={{ display: "flex", gap: 1 }}>
+                <Box sx={{ display: "flex", gap: 1, pb: 4 }}>
                   <IconButton
                     onClick={handleFavorite}
                     disabled={!isLoggedIn}
                     sx={{
-                      border: "1px solid #e0e0e0",
+                      border: "none",
                       width: 48,
                       height: 48,
                       color: isFavorited ? "#EB5757" : "inherit",
@@ -331,7 +327,7 @@ export default function ProductDetails() {
                   <IconButton
                     onClick={handleShare}
                     sx={{
-                      border: "1px solid #e0e0e0",
+                      border: "none",
                       width: 48,
                       height: 48,
                     }}
@@ -424,8 +420,8 @@ export default function ProductDetails() {
             </Grid>
           </Grid>
 
-          <Box sx={{ mt: 6 }}>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+          <Box sx={{ mt: 6, mb: 6 }}>
+            <Typography variant="h5" sx={{ mb: 8, mx: 6,  fontWeight: 600 }}>
               Produtos Semelhantes
             </Typography>
             <Grid container spacing={2}>

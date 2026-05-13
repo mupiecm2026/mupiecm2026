@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { GatewayConfigService } from "../../../lib/services/gateway-config-service";
+import { GatewayConfigService } from "../../../lib/services/payments/gateways/configurations/gateway-config-service";
 
 /**
  * Fonte única e confiável de env no OpenNext + Cloudflare

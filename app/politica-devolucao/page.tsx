@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container, Paper, Typography } from "@mui/material";
-import { useThemeContext } from "../../context/ThemeContext";
+import { useThemeContext } from "../../context/Layout/ThemeContext";
 
 export default function PoliticaDevolucao() {
   const { mode } = useThemeContext();

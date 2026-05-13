@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { authService } from "../../../../lib/services/auth-service";
+import { authService } from "../../../../lib/services/auth/auth-service";
 
 export async function POST() {
   try {

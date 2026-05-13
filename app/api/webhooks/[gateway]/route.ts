@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PaymentOrchestrator } from "../../../../lib/services/payment-orchestrator";
-import { CashbackService } from "../../../../lib/services/cashback-service";
+import { PaymentOrchestrator } from "../../../../lib/services/payments/gateways/payment-orchestrator";
+import { CashbackService } from "../../../../lib/services/sales/cashback/cashback-service";
 import { logger } from "../../../../lib/utils/logger";
 
 type RouteContext = {

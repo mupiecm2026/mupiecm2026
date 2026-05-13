@@ -19,11 +19,11 @@ import {
 import { CreditCard, Person, CalendarMonth, Lock, Security } from "@mui/icons-material";
 import Image from "next/image";
 
-import mpIcon from "../../public/mp.png";
-import stripeIcon from "../../public/stripe.png";
-import pagarmeIcon from "../../public/pagarme.png";
-import cieloIcon from "../../public/cielo.jpeg";
-import { useCart } from "../../context/CartContext";
+import mpIcon from "../../public/gateway-icons/mp.png";
+import stripeIcon from "../../public/gateway-icons/stripe.png";
+import pagarmeIcon from "../../public/gateway-icons/pagarme.png";
+import cieloIcon from "../../public/gateway-icons/cielo.jpeg";
+import { useCart } from "../../context/Products/CartContext";
 import { GatewayNames } from "../../types/types";
 import { tokenizeCard } from "../../lib/utils/card-tokenizer";
 import { collectAllFingerprints, DeviceFingerprints } from "../../lib/utils/fingerprint-collector";

@@ -24,7 +24,7 @@ import {
   Avatar,
 } from "@mui/material";
 import { Email, Lock, Person, Visibility, VisibilityOff, Business } from "@mui/icons-material";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../../context/Authentication/AuthContext";
 
 interface Props {
   open: boolean;

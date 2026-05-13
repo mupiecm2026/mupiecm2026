@@ -1,5 +1,5 @@
 import { logger } from "../utils/logger";
-import { CashbackService } from "./cashback-service";
+import { CashbackService } from "./sales/cashback/cashback-service";
 
 export class WebhookService {
   constructor(private cashbackService: CashbackService) {}

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authService } from '../../../../lib/services/auth-service';
-import { CashbackService } from '../../../../lib/services/cashback-service';
+import { authService } from '../../../../lib/services/auth/auth-service';
+import { CashbackService } from '../../../../lib/services/sales/cashback/cashback-service';
 import { logger } from '../../../../lib/utils/logger';
 
 function getSessionToken(request: NextRequest) {
