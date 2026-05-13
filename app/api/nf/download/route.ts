@@ -1,5 +1,8 @@
+// app\api\nf\download\route.ts
 import { NextRequest, NextResponse } from "next/server";
-import NFService from "../../../../lib/services/nf-service";
+import NFService from "../../../../lib/services/nf/nf-service";
+
+export const runtime = 'edge';
 
 function getEnv(): any {
   const env =
@@ -32,16 +35,17 @@ export async function GET(request: NextRequest) {
     if (format === "pdf") {
       const pdfBuffer = await nfService.generateNFPDF(nf);
 
-      return new NextResponse(new Uint8Array(pdfBuffer), {
+      return new NextResponse(Buffer.from(pdfBuffer), {
         headers: {
           "Content-Type": "application/pdf",
           "Content-Disposition": `attachment; filename="NF-${nf.id}.pdf"`,
         },
       });
     } else if (format === "png") {
-      const pngBuffer = await nfService.generateNFPNG(nf);
+   
+      const pngBuffer = await nfService.generateNFPNGFile(nf);
 
-      return new NextResponse(new Uint8Array(pngBuffer), {
+      return new NextResponse(Buffer.from(pngBuffer), {
         headers: {
           "Content-Type": "image/png",
           "Content-Disposition": `attachment; filename="NF-${nf.id}.png"`,

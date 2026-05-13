@@ -14,15 +14,17 @@ export async function POST(req: Request) {
     const user = await authService.registerUser(email, password);
     const session = await authService.createSession(user.email);
 
-    const res = NextResponse.json({ success: true });
+    const res = NextResponse.json({ user: { email: user.email, role: user.role } });
 
-    res.cookies.set("mupi_session", "", {
+    res.cookies.set("mupi_session", session.token, {
+      httpOnly: true,
+      sameSite: "strict",
       path: "/",
-      expires: new Date(0),
+      maxAge: 60 * 60 * 24 * 7,
+      secure: true,
     });
 
     return res;
-
   } catch (error: any) {
     return NextResponse.json({ error: error.message || "Erro ao criar usuário." }, { status: 400 });
   }

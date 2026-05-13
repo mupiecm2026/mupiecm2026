@@ -400,32 +400,14 @@ export default function DashboardPage() {
                         <TableCell>{nf.time}</TableCell>
                         <TableCell align="right">R$ {nf.total.toFixed(2).replace(".", ",")}</TableCell>
                         <TableCell align="center">
-                          <Stack direction="row" spacing={1}>
-                            <Button
-                              size="small"
-                              variant="outlined"
-                              startIcon={<DownloadIcon />}
-                              onClick={() => window.open(`/api/nf/download?id=${nf.id}&format=pdf`, '_blank')}
-                            >
-                              PDF
-                            </Button>
-                            <Button
-                              size="small"
-                              variant="outlined"
-                              startIcon={<DownloadIcon />}
-                              onClick={() => window.open(`/api/nf/download?id=${nf.id}&format=png`, '_blank')}
-                            >
-                              PNG
-                            </Button>
-                            <Button
-                              size="small"
-                              variant="outlined"
-                              startIcon={<DownloadIcon />}
-                              onClick={() => window.open(`/api/nf/download?id=${nf.id}&format=txt`, '_blank')}
-                            >
-                              TXT
-                            </Button>
-                          </Stack>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<DownloadIcon />}
+                            onClick={() => window.open(`/api/nf/download?id=${nf.id}&format=png`, '_blank')}
+                          >
+                            PNG
+                          </Button>
                         </TableCell>
                       </TableRow>
                     ))

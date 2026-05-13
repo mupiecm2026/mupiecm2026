@@ -37,7 +37,7 @@ export default function FavoritesPage() {
 
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{pb: 4}}>
         Meus Favoritos
       </Typography>
       {favorites.length === 0 ? (
@@ -53,29 +53,31 @@ export default function FavoritesPage() {
         <Grid container spacing={3}>
           {favorites.map((product) => (
             <Grid item xs={12} sm={6} md={4} key={product.id}>
-              <Card sx={{ maxWidth: 250 }}>
+              <Card sx={{ maxWidth: 250, height: 350 }}>
                 {product.image ? (
                   <CardMedia
                     component="img"
-                    height="150"
+                    sx={{ height: 200, objectFit: "contain" }}
                     image={product.image}
                     alt={product.title}
                   />
                 ) : null}
                 <CardContent>
-                  <Typography variant="h6" gutterBottom>
+                  <Box sx={{height: 80, overflow: "hidden", }}>
+                  <Typography variant="subtitle2" gutterBottom>
                     {product.title}
                   </Typography>
                   <Typography sx={{ mb: 2 }}>
                     R$ {product.price.toFixed(2)}
                   </Typography>
+                  </Box>
                   <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
                     <Button
                       component={Link}
                       href={`/produto/${product.id}`}
                       variant="outlined"
                       size="small"
-                      fullWidth
+                      
                     >
                       Ver produto
                     </Button>
@@ -84,7 +86,7 @@ export default function FavoritesPage() {
                       size="small"
                       color="error"
                       onClick={() => handleRemove(product.id)}
-                      fullWidth
+                      // fullWidth
                     >
                       Remover
                     </Button>

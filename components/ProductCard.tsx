@@ -162,10 +162,10 @@ export default function ProductCard({ product, defaultQty = 1, onAdded, size = '
             textTransform: "none",
             fontWeight: 700,
             fontFamily: "'Roboto', sans-serif",
-            backgroundColor: "#00b74a",
+            backgroundColor: "#27ae60",
             color: "#ffffff",
             '&:hover': {
-              backgroundColor: "#009e42",
+              backgroundColor: "#1E874B",
             },
           }}
         >

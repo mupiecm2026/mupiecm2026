@@ -17,7 +17,7 @@ import { CashbackService } from "./cashback-service";
 import { GatewayConfigService } from "./gateway-config-service";
 import { ValidationService } from "./validation-service";
 import { RiskService } from "./risk-service";
-import { NFService } from "./nf-service";
+import { NFService } from "./nf/nf-service";
 import { logger } from "../utils/logger";
 
 export interface GatewayInterface {

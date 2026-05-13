@@ -228,7 +228,7 @@ export default function ProductDetails() {
                         sx={{
                           width: "100%",
                           height: 80,
-                          objectFit: "cover",
+                          objectFit: "contain",
                           borderRadius: 1,
                           cursor: "pointer",
                           border: selectedImage === index ? "2px solid #1976d2" : "2px solid transparent",
@@ -267,19 +267,19 @@ export default function ProductDetails() {
                   <Box
                     sx={{
                       position: "absolute",
-                      top: zoomPos.y - 80,
-                      left: zoomPos.x - 80,
-                      width: 160,
-                      height: 160,
-                      borderRadius: "50%",
+                      top: Math.max(0, Math.min(zoomPos.y - 110, imageBox.height - 220)),
+                      left: Math.max(0, Math.min(zoomPos.x - 110, imageBox.width - 220)),
+                      width: 220,
+                      height: 220,
+                      borderRadius: 2,
                       border: "2px solid rgba(255,255,255,0.9)",
                       boxShadow: "0 0 0 9999px rgba(0,0,0,0.15)",
                       overflow: "hidden",
                       pointerEvents: "none",
                       bgcolor: "rgba(255,255,255,0.05)",
                       backgroundImage: `url(${product.images[selectedImage]})`,
-                      backgroundSize: `${imageBox.width * 2}px ${imageBox.height * 2}px`,
-                      backgroundPosition: `${-zoomPos.x * 2 + 80}px ${-zoomPos.y * 2 + 80}px`,
+                      backgroundSize: `${imageBox.width * 2.4}px ${imageBox.height * 2.4}px`,
+                      backgroundPosition: `${-zoomPos.x * 2.4 + 110}px ${-zoomPos.y * 2.4 + 110}px`,
                     }}
                   >
                     <Box
@@ -428,10 +428,10 @@ export default function ProductDetails() {
             <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
               Produtos Semelhantes
             </Typography>
-          <Grid container spacing={1}>
+            <Grid container spacing={2}>
               {similarProducts.map((prod) => (
-                <Grid item xs={12} sm={6} md={4} key={prod.id}>
-                  <ProductCard product={prod} size="small" />
+                <Grid item xs={6} sm={4} md={3} key={prod.id} sx={{ display: "flex", justifyContent: "center" }}>
+                  <ProductCard product={prod} size="default" defaultQty={4} />
                 </Grid>
               ))}
             </Grid>

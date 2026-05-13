@@ -40,6 +40,8 @@ export default function HomePage() {
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
+  const EXCLUDED_CATEGORIES = ["alimentícios", "alimenticios", "alimentos"];
+
   // Sorting
   const [sortBy, setSortBy] = useState<string>("title");
 
@@ -85,9 +87,14 @@ export default function HomePage() {
           raw: p,
         }));
 
-        setProducts(mapped);
+        const visibleProducts = mapped.filter((product: any) => {
+          const category = String(product.category || "").toLowerCase();
+          return !EXCLUDED_CATEGORIES.includes(category);
+        });
+
+        setProducts(visibleProducts);
         if (typeof window !== "undefined") {
-          sessionStorage.setItem(cacheKey, JSON.stringify(mapped));
+          sessionStorage.setItem(cacheKey, JSON.stringify(visibleProducts));
         }
       } catch (err) {
         console.error(err);
@@ -103,7 +110,10 @@ export default function HomePage() {
   // Get unique categories
   const categories = useMemo(() => {
     const cats = [...new Set(products.map(p => p.category))];
-    return cats.filter(Boolean);
+    return cats.filter(Boolean).filter((category) => {
+      const value = String(category || "").toLowerCase();
+      return !EXCLUDED_CATEGORIES.includes(value);
+    });
   }, [products]);
 
   // Filter and sort products

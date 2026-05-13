@@ -2,6 +2,7 @@ import { KVStore } from "./kv-store.interface";
 
 export class LocalKVStore implements KVStore {
   private filePath: string | null = null;
+  private fallbackStore: Record<string, any> | null = null;
   // Guardamos as referências dos módulos carregados para evitar múltiplos imports
   private nodeFs: any = null;
   private nodePath: any = null;
@@ -11,12 +12,34 @@ export class LocalKVStore implements KVStore {
     // para evitar que o Cloudflare tente resolver caminhos no build.
   }
 
+  private supportsNodeFs(): boolean {
+    try {
+      // Check if we're in a Node.js environment with fs access
+      return (
+        typeof process !== "undefined" &&
+        typeof process.versions === "object" &&
+        typeof process.versions.node === "string" &&
+        typeof require === "function"
+      );
+    } catch {
+      return false;
+    }
+  }
+
   /**
    * Inicializa os módulos do Node.js de forma dinâmica.
    * Só será chamado dentro dos métodos se necessário.
    */
   private async init() {
     if (this.nodeFs && this.nodePath) return;
+    if (this.fallbackStore) return;
+
+    if (!this.supportsNodeFs()) {
+      const globalObj = globalThis as any;
+      globalObj.__MUPI_LOCAL_KV__ = globalObj.__MUPI_LOCAL_KV__ || {};
+      this.fallbackStore = globalObj.__MUPI_LOCAL_KV__;
+      return;
+    }
 
     const fsModuleName = "fs";
     const pathModuleName = "path";
@@ -45,19 +68,32 @@ export class LocalKVStore implements KVStore {
         this.nodeFs.writeFileSync(this.filePath, JSON.stringify({}, null, 2));
       }
     } catch (error) {
-      // No Cloudflare, ele cairá aqui silenciosamente ou você trata o erro
-      throw new Error("LocalKVStore: Sistema de arquivos indisponível neste ambiente.");
+      const globalObj = globalThis as any;
+      globalObj.__MUPI_LOCAL_KV__ = globalObj.__MUPI_LOCAL_KV__ || {};
+      this.fallbackStore = globalObj.__MUPI_LOCAL_KV__;
     }
   }
   
   private read(): Record<string, any> {
     // Nota: Como read() é síncrono no seu código original, 
     // mas o import é assíncrono, os métodos públicos devem garantir o init().
+    if (this.fallbackStore) {
+      return this.fallbackStore;
+    }
+
     const raw = this.nodeFs.readFileSync(this.filePath!, "utf-8") || "{}";
     return JSON.parse(raw);
   }
 
   private write(data: Record<string, any>) {
+    if (this.fallbackStore) {
+      for (const key of Object.keys(this.fallbackStore)) {
+        delete this.fallbackStore[key];
+      }
+      Object.assign(this.fallbackStore, data);
+      return;
+    }
+
     this.nodeFs.writeFileSync(this.filePath!, JSON.stringify(data, null, 2));
   }
 

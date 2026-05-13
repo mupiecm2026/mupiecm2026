@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { PaymentProcessor } from "../../../lib/services/payment-processor";
 import { GatewayConfigService } from "../../../lib/services/gateway-config-service";
 import { CashbackService } from "../../../lib/services/cashback-service";
-import { NFService } from "../../../lib/services/nf-service";
+import { NFService } from "../../../lib/services/nf/nf-service";
 import { IdempotencyService } from "../../../lib/services/idempotency-service";
 import { logger } from "../../../lib/utils/logger";
 import { sendPaymentNotificationEmail } from "../../../lib/services/email-service";

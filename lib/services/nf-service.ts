@@ -4,6 +4,7 @@ import { KVStore } from "./kv/kv-store.interface";
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 import QRCode from 'qrcode';
+import UPNG from 'upng-js';
 
 export interface NFData {
   id: string;
@@ -199,20 +200,217 @@ export class NFService {
   }
 
   async generateNFPNG(nf: NFData): Promise<Buffer> {
-    // Generate QR Code as PNG
-    try {
-      const qrCodeDataURL = await QRCode.toDataURL(JSON.stringify({
-        id: nf.id,
-        total: nf.total,
-        date: nf.date
-      }), { width: 300 });
+    const paymentType = nf.payment.cardBrand
+      ? `CARTAO ${nf.payment.cardBrand}`
+      : nf.payment.gateway.toUpperCase().includes('PIX')
+      ? 'PIX'
+      : nf.payment.gateway.toUpperCase();
 
-      // Convert data URL to buffer
-      const base64Data = qrCodeDataURL.replace(/^data:image\/png;base64,/, '');
-      return Buffer.from(base64Data, 'base64');
+    const header = [
+      'NOTA FISCAL ELETRONICA',
+      '======================',
+      `ID: ${nf.id}`,
+      `DATA: ${nf.date} ${nf.time}`,
+      `PEDIDO: ${nf.orderId}`,
+      '',
+      'EMISSOR:',
+      `${nf.issuer.name}`,
+      `CNPJ: ${nf.issuer.cnpj}`,
+      `${nf.issuer.address}`,
+      '',
+      'CLIENTE:',
+      `${nf.customer.name}`,
+      `CPF: ${nf.customer.cpf}`,
+      `EMAIL: ${nf.customer.email}`,
+      '',
+      'PAGAMENTO:',
+      `TIPO: ${paymentType}`,
+      nf.payment.cardBrand ? `CARTAO: **** ${nf.payment.cardLast4}` : `GATEWAY: ${nf.payment.gateway}`,
+      '',
+      'ITENS:',
+      'ID  PRODUTO                 QTD  UNIDADE     TOTAL',
+      '-------------------------------------------------------------',
+    ];
+
+    const itemLines = nf.items.flatMap(item => this.formatItemLines(item));
+    const footer = [
+      '',
+      `TOTAL: R$ ${nf.total.toFixed(2).replace('.', ',')}`,
+      '',
+      `CODIGO DE BARRAS: ${nf.barcode}`,
+    ];
+
+    const lines = [...header, ...itemLines, ...footer].filter(Boolean);
+    const normalizedLines = lines.map(line => this.normalizeTextLine(line));
+    const scale = 4;
+    const charWidth = 6 * scale;
+    const charHeight = 8 * scale;
+    const padding = 24;
+    const letterSpacing = scale;
+    const qrSize = 180;
+    const maxLineLength = Math.max(...normalizedLines.map(line => line.length));
+    const width = Math.max(1024, padding * 2 + maxLineLength * (charWidth + letterSpacing) + qrSize / 2);
+    const height = padding * 2 + normalizedLines.length * (charHeight + scale) + qrSize + 40;
+
+    const rgba = new Uint8Array(width * height * 4);
+    for (let i = 0; i < rgba.length; i += 4) {
+      rgba[i] = 255;
+      rgba[i + 1] = 255;
+      rgba[i + 2] = 255;
+      rgba[i + 3] = 255;
+    }
+
+    let y = padding;
+    for (const line of normalizedLines) {
+      let x = padding;
+      for (const char of line) {
+        this.drawChar(rgba, width, x, y, char, scale);
+        x += charWidth + letterSpacing;
+      }
+      y += charHeight + scale;
+    }
+
+    try {
+      const qr = await this.createQRCodeImage(nf.id, qrSize);
+      this.pasteImage(rgba, width, qr.rgba, qr.width, qr.height, width - padding - qr.width, padding);
     } catch (error) {
-      // Ignore PNG generation error, fallback to PDF
-      return this.generateNFPDF(nf);
+      // ignore QR code failures
+    }
+
+    this.drawBarcode(rgba, width, padding, y + 16, nf.barcode, Math.min(width - padding * 2, 760), 48);
+
+    const pngArrayBuffer = UPNG.encode([rgba.buffer], width, height, 0);
+    return Buffer.from(pngArrayBuffer);
+  }
+
+  private formatItemLines(item: NFData['items'][number]): string[] {
+    const title = item.title.toUpperCase();
+    const quantity = item.quantity.toString();
+    const unitPrice = `R$ ${item.unitPrice.toFixed(2).replace('.', ',')}`;
+    const total = `R$ ${item.total.toFixed(2).replace('.', ',')}`;
+    const maxTitleLength = 24;
+    const titleParts = this.wrapText(title, maxTitleLength);
+
+    const firstLine = `${item.id.toString().padEnd(4)} ${titleParts[0].padEnd(maxTitleLength)} ${quantity.padStart(3)} ${unitPrice.padStart(10)} ${total.padStart(12)}`;
+    const additionalLines = titleParts.slice(1).map(line => `${"".padEnd(4)} ${line.padEnd(maxTitleLength)} ${"".padStart(3)} ${"".padStart(10)} ${"".padStart(12)}`);
+
+    return [firstLine, ...additionalLines];
+  }
+
+  private wrapText(text: string, maxLength: number): string[] {
+    const words = text.split(' ');
+    const lines: string[] = [];
+    let current = '';
+
+    for (const word of words) {
+      if ((current + (current ? ' ' : '') + word).length <= maxLength) {
+        current = current ? `${current} ${word}` : word;
+      } else {
+        if (current) {
+          lines.push(current);
+        }
+        current = word;
+      }
+    }
+
+    if (current) {
+      lines.push(current);
+    }
+
+    return lines;
+  }
+
+  private async createQRCodeImage(data: string, size: number): Promise<{ rgba: Uint8Array; width: number; height: number }> {
+    const dataUrl = await QRCode.toDataURL(data, { width: size, margin: 1 });
+    const base64 = dataUrl.replace(/^data:image\/png;base64,/, "");
+    const buffer = Buffer.from(base64, 'base64');
+    const decoded = UPNG.decode(buffer.buffer);
+    const frames = UPNG.toRGBA8(decoded);
+    const qrRgba = frames[0];
+    return { rgba: qrRgba, width: decoded.width, height: decoded.height };
+  }
+
+  private pasteImage(dest: Uint8Array, destWidth: number, src: Uint8Array, srcWidth: number, srcHeight: number, destX: number, destY: number) {
+    for (let row = 0; row < srcHeight; row++) {
+      for (let col = 0; col < srcWidth; col++) {
+        const srcIndex = (row * srcWidth + col) * 4;
+        const destIndex = ((destY + row) * destWidth + destX + col) * 4;
+        dest[destIndex] = src[srcIndex];
+        dest[destIndex + 1] = src[srcIndex + 1];
+        dest[destIndex + 2] = src[srcIndex + 2];
+        dest[destIndex + 3] = src[srcIndex + 3];
+      }
+    }
+  }
+
+  private drawBarcode(rgba: Uint8Array, width: number, offsetX: number, offsetY: number, code: string, barcodeWidth: number, barcodeHeight: number) {
+    const barWidth = Math.max(2, Math.floor(barcodeWidth / (code.length * 3)));
+    let x = offsetX;
+
+    for (const digit of code) {
+      const value = parseInt(digit, 10);
+      const barCount = (isNaN(value) ? 1 : value % 4) + 2;
+      for (let i = 0; i < barCount; i++) {
+        this.fillRect(rgba, width, x, offsetY, barWidth, barcodeHeight, 0, 0, 0, 255);
+        x += barWidth;
+        this.fillRect(rgba, width, x, offsetY, barWidth, barcodeHeight, 255, 255, 255, 255);
+        x += barWidth;
+      }
+      x += barWidth;
+      if (x + barWidth * 2 > offsetX + barcodeWidth) break;
+    }
+
+    const text = code;
+    const normalizedText = this.normalizeTextLine(text);
+    let textX = offsetX;
+    let textY = offsetY + barcodeHeight + 12;
+    for (const char of normalizedText) {
+      this.drawChar(rgba, width, textX, textY, char, 2);
+      textX += 6 * 2 + 1;
+    }
+  }
+
+  private fillRect(rgba: Uint8Array, width: number, x: number, y: number, rectWidth: number, rectHeight: number, r: number, g: number, b: number, a: number) {
+    for (let row = 0; row < rectHeight; row++) {
+      for (let col = 0; col < rectWidth; col++) {
+        const index = ((y + row) * width + x + col) * 4;
+        rgba[index] = r;
+        rgba[index + 1] = g;
+        rgba[index + 2] = b;
+        rgba[index + 3] = a;
+      }
+    }
+  }
+
+  private normalizeTextLine(line: string) {
+    return line
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^A-Za-z0-9 .,:\-\/\$]/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase();
+  }
+
+  private drawChar(rgba: Uint8Array, width: number, offsetX: number, offsetY: number, char: string, scale: number) {
+    const pattern = CHAR_PATTERN[char] || CHAR_PATTERN[" "];
+    for (let col = 0; col < 5; col += 1) {
+      const bits = pattern[col] || 0;
+      for (let row = 0; row < 7; row += 1) {
+        if ((bits >> row) & 1) {
+          for (let sx = 0; sx < scale; sx += 1) {
+            for (let sy = 0; sy < scale; sy += 1) {
+              const x = offsetX + col * scale + sx;
+              const y = offsetY + row * scale + sy;
+              const index = (y * width + x) * 4;
+              rgba[index] = 0;
+              rgba[index + 1] = 0;
+              rgba[index + 2] = 0;
+              rgba[index + 3] = 255;
+            }
+          }
+        }
+      }
     }
   }
 
@@ -250,5 +448,51 @@ Código de Barras: ${nf.barcode}
     `.trim();
   }
 }
+
+const CHAR_PATTERN: Record<string, number[]> = {
+  " ": [0, 0, 0, 0, 0],
+  "A": [0x0E, 0x11, 0x1F, 0x11, 0x11],
+  "B": [0x1E, 0x11, 0x1E, 0x11, 0x1E],
+  "C": [0x0E, 0x11, 0x10, 0x11, 0x0E],
+  "D": [0x1E, 0x11, 0x11, 0x11, 0x1E],
+  "E": [0x1F, 0x10, 0x1E, 0x10, 0x1F],
+  "F": [0x1F, 0x10, 0x1E, 0x10, 0x10],
+  "G": [0x0E, 0x10, 0x17, 0x11, 0x0F],
+  "H": [0x11, 0x11, 0x1F, 0x11, 0x11],
+  "I": [0x1F, 0x04, 0x04, 0x04, 0x1F],
+  "J": [0x07, 0x02, 0x02, 0x12, 0x0C],
+  "K": [0x11, 0x12, 0x1C, 0x12, 0x11],
+  "L": [0x10, 0x10, 0x10, 0x10, 0x1F],
+  "M": [0x11, 0x1B, 0x15, 0x11, 0x11],
+  "N": [0x11, 0x19, 0x15, 0x13, 0x11],
+  "O": [0x0E, 0x11, 0x11, 0x11, 0x0E],
+  "P": [0x1E, 0x11, 0x1E, 0x10, 0x10],
+  "Q": [0x0E, 0x11, 0x11, 0x1D, 0x0F],
+  "R": [0x1E, 0x11, 0x1E, 0x12, 0x11],
+  "S": [0x0F, 0x10, 0x0E, 0x01, 0x1E],
+  "T": [0x1F, 0x04, 0x04, 0x04, 0x04],
+  "U": [0x11, 0x11, 0x11, 0x11, 0x0E],
+  "V": [0x11, 0x11, 0x11, 0x0A, 0x04],
+  "W": [0x11, 0x11, 0x15, 0x1B, 0x11],
+  "X": [0x11, 0x0A, 0x04, 0x0A, 0x11],
+  "Y": [0x11, 0x11, 0x0A, 0x04, 0x04],
+  "Z": [0x1F, 0x02, 0x04, 0x08, 0x1F],
+  "0": [0x0E, 0x11, 0x13, 0x15, 0x0E],
+  "1": [0x04, 0x0C, 0x04, 0x04, 0x0E],
+  "2": [0x0E, 0x11, 0x06, 0x08, 0x1F],
+  "3": [0x1F, 0x02, 0x0E, 0x01, 0x1E],
+  "4": [0x12, 0x12, 0x12, 0x1F, 0x02],
+  "5": [0x1F, 0x10, 0x1E, 0x01, 0x1E],
+  "6": [0x0E, 0x10, 0x1E, 0x11, 0x0E],
+  "7": [0x1F, 0x01, 0x02, 0x04, 0x08],
+  "8": [0x0E, 0x11, 0x0E, 0x11, 0x0E],
+  "9": [0x0E, 0x11, 0x0F, 0x01, 0x0E],
+  ":": [0x00, 0x04, 0x00, 0x04, 0x00],
+  ".": [0x00, 0x00, 0x00, 0x00, 0x04],
+  "-": [0x00, 0x00, 0x1F, 0x00, 0x00],
+  "/": [0x00, 0x01, 0x02, 0x04, 0x08],
+  "$": [0x04, 0x1F, 0x14, 0x1E, 0x04],
+  ",": [0x00, 0x00, 0x00, 0x04, 0x08],
+};
 
 export default NFService;

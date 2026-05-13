@@ -3,7 +3,7 @@ import { logger } from '../utils/logger';
 import { PaymentProcessor } from './payment-processor';
 import { GatewayConfigService } from './gateway-config-service';
 import { CashbackService } from './cashback-service';
-import { NFService } from './nf-service';
+import { NFService } from './nf/nf-service';
 
 export class HealthService {
   private paymentProcessor: PaymentProcessor;

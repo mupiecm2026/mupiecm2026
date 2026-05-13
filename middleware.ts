@@ -9,7 +9,7 @@ const PUBLIC_PATHS = [
   "/produto",
 ];
 
-const MASTER_PATHS = ["/config-page", "/dashboard"];
+const MASTER_PATHS = ["/config-page", "/dashboard", "/cashback"];
 
 function isPublic(path: string) {
   return PUBLIC_PATHS.some(p => path === p || path.startsWith(p + "/"));
@@ -19,7 +19,28 @@ function isMaster(path: string) {
   return MASTER_PATHS.some(p => path === p || path.startsWith(p + "/"));
 }
 
-export function middleware(request: NextRequest) {
+async function validateSession(token: string): Promise<{ role: string } | null> {
+  try {
+    // Call the /api/auth/me endpoint to validate session
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000'}/api/auth/me`, {
+      headers: {
+        'Cookie': `mupi_session=${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data : any = await response.json();
+    return data.user ? { role: data.user.role } : null;
+  } catch (error) {
+    console.error('Session validation error:', error);
+    return null;
+  }
+}
+
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (isPublic(pathname) || pathname.startsWith("/api/")) {
@@ -27,25 +48,17 @@ export function middleware(request: NextRequest) {
   }
 
   const token = request.cookies.get("mupi_session")?.value;
-
   if (!token) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // validação leve (edge-safe)
-  const looksValidJWT = token.split(".").length === 3;
-
-  if (!looksValidJWT) {
+  const session = await validateSession(token);
+  if (!session) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  // proteção master (não confiável no edge, só bloqueio básico)
-  if (isMaster(pathname)) {
-    const hasJWTShape = token.startsWith("ey");
-
-    if (!hasJWTShape) {
-      return NextResponse.redirect(new URL("/", request.url));
-    }
+  if (isMaster(pathname) && session.role !== "master") {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();

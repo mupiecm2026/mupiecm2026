@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { jwtVerify } from "jose";
+import { authService } from "../../../../lib/services/auth-service";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function GET(req: Request) {
   try {
@@ -15,12 +14,15 @@ export async function GET(req: Request) {
       return NextResponse.json({ user: null });
     }
 
-    const { payload } = await jwtVerify(token, secret);
+    const session = await authService.getSession(token);
+    if (!session) {
+      return NextResponse.json({ user: null });
+    }
 
     return NextResponse.json({
       user: {
-        email: payload.email,
-        role: payload.role,
+        email: session.email,
+        role: session.role,
       },
     });
   } catch {

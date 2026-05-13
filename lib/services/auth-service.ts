@@ -16,6 +16,7 @@ interface SessionRecord {
   email: string;
   role: UserRole;
   createdAt: string;
+  expiresAt: string;
 }
 
 function getEnv(): any {
@@ -86,11 +87,13 @@ export class AuthService {
       throw new Error("Usuário não encontrado.");
     }
     const token = createSessionToken();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
     const session: SessionRecord = {
       token,
       email: this.normalizeEmail(email),
       role: user.role,
       createdAt: new Date().toISOString(),
+      expiresAt,
     };
     const kv = await this.getKV();
     await kv.put(`session:${token}`, JSON.stringify(session));
@@ -102,7 +105,12 @@ export class AuthService {
     const raw = await kv.get(`session:${token}`);
     if (!raw) return null;
     try {
-      return JSON.parse(raw) as SessionRecord;
+      const session = JSON.parse(raw) as SessionRecord;
+      if (session.expiresAt && new Date(session.expiresAt) <= new Date()) {
+        await kv.delete(`session:${token}`);
+        return null;
+      }
+      return session;
     } catch {
       return null;
     }

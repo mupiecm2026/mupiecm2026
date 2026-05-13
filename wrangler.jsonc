@@ -19,22 +19,19 @@
 		"binding": "ASSETS"
 	},
 	"vars": {
-    "APP_ENV": "production",
-	"NEXT_PUBLIC_PRODUCTS_URL": "https://dummyjson.com",
-	"DOMAIN_URL": ""
-  	},
+		"APP_ENV": "production",
+		"NEXT_PUBLIC_PRODUCTS_URL": "https://dummyjson.com",
+		"DOMAIN_URL": "https://mupi.mupi-ecm-123br.workers.dev/"
+	},
 	"kv_namespaces": [
 		{
 			"binding": "PROD_KV_STORAGE",
-			"id": "772dd974514a4232bf940eead42ca260"
+			"id": "5f84b3b6a1b84ae689377a45153f2528",
+			"remote": true
 		}
 	],
 	"triggers": {
-		"crons": [
-			{
-				"cron": "0 0 * * *"
-			}
-		]
+	"crons": ["0 0 * * *"]
 	},
 	"images": {
 		"binding": "IMAGES"

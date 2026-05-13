@@ -8,8 +8,9 @@ const nextConfig: NextConfig = {
   /* config options here */
   /** @type {import('next').NextConfig} */
   reactStrictMode: true,
-  experimental: {
-}
+  images: {
+      unoptimized: true,
+    }
 };
 
 export default nextConfig;

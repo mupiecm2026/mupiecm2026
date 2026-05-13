@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
-import { SignJWT } from "jose";
+import { authService } from "../../../../lib/services/auth-service";
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET!);
 
 export async function POST(req: Request) {
   try {
@@ -20,26 +19,14 @@ export async function POST(req: Request) {
       );
     }
 
-    // TODO: substituir por validação real (DB/API)
-    const user = {
-      email,
-      role: "user",
-    };
+    const user = await authService.verifyUser(email, password);
+    const session = await authService.createSession(user.email);
 
-    const token = await new SignJWT({
-      email: user.email,
-      role: user.role,
-    })
-      .setProtectedHeader({ alg: "HS256" })
-      .setIssuedAt()
-      .setExpirationTime("7d")
-      .sign(secret);
+    const res = NextResponse.json({ user: { email: user.email, role: user.role } });
 
-    const res = NextResponse.json({ user });
-
-    res.cookies.set("mupi_session", token, {
+    res.cookies.set("mupi_session", session.token, {
       httpOnly: true,
-      sameSite: "lax",
+      sameSite: "strict",
       path: "/",
       maxAge: 60 * 60 * 24 * 7,
       secure: true,

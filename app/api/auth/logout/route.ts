@@ -16,7 +16,9 @@ export async function POST() {
       value: "",
       path: "/",
       expires: new Date(0),
-      sameSite: "lax",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
     });
 
     return response;
