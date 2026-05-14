@@ -28,7 +28,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     const transformedProduct = {
       id: product.id,
       title: product.title,
-      price: product.price,
+      price: (product.price || 0) * 8,
       description: product.description,
       images: product.images || [product.thumbnail],
       thumbnail: product.thumbnail,

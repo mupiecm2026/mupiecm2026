@@ -145,7 +145,6 @@ export default function DashboardPage() {
       const r = await axios.get("/api/cashback/list");
       setCashbacks(Array.isArray(r.data) ? r.data : []);
     } catch (err: any) {
-      console.error("fetchCashbacks error:", err?.response?.data || err?.message || err);
       setCashbacks([]);
     } finally {
       setLoadingCashbacks(false);
@@ -158,7 +157,6 @@ export default function DashboardPage() {
       const r = await axios.get("/api/nf/list");
       setNfs(r.data);
     } catch (err: any) {
-      console.error("fetchNfs error:", err?.response?.data || err?.message || err);
       setNfs([]);
     } finally {
       setLoadingNfs(false);

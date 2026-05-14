@@ -48,10 +48,18 @@ export default function LoginModal({ open, onClose }: Props) {
 
   const handleSubmit = async () => {
     setError(null);
-    if (!email || !password) {
-      setError("Preencha email e senha.");
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email || !emailRegex.test(email.trim())) {
+      setError("Informe um email válido.");
       return;
     }
+
+    if (!password || password.length < 6) {
+      setError("Senha deve ter pelo menos 6 caracteres.");
+      return;
+    }
+
     if (mode === "register" && password !== confirmPassword) {
       setError("As senhas precisam ser iguais.");
       return;

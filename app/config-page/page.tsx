@@ -146,7 +146,6 @@ export default function Page() {
       try {
         const res : any = await fetch("/api/vault");
         const data = await res.json();
-        console.log("🚀 ~ load ~ data:", data)
 
         if (!res.ok || !data?.success) throw new Error("Erro ao carregar");
 
@@ -173,7 +172,7 @@ export default function Page() {
         setSelectedGw(firstGw as GatewayId);
         setSelectedPsp(firstPsp as PspId);
       } catch (e) {
-        console.error(e);
+        // error handled silently
       } finally {
         if (alive) setLoading(false);
       }

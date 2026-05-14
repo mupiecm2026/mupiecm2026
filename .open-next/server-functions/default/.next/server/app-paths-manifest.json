@@ -9,6 +9,7 @@
   "/api/cashback/list/route": "app/api/cashback/list/route.js",
   "/api/cashback/verify/route": "app/api/cashback/verify/route.js",
   "/api/cron/route": "app/api/cron/route.js",
+  "/api/debug/session/route": "app/api/debug/session/route.js",
   "/api/health/gateway/route": "app/api/health/gateway/route.js",
   "/api/health/psp/efipay/route": "app/api/health/psp/efipay/route.js",
   "/api/nf/download/route": "app-edge-has-no-entrypoint",
@@ -25,6 +26,7 @@
   "/not-found/page": "app/not-found/page.js",
   "/page": "app/page.js",
   "/politica-devolucao/page": "app/politica-devolucao/page.js",
+  "/politica-troca-cancelamento/page": "app/politica-troca-cancelamento/page.js",
   "/produto/[id]/page": "app/produto/[id]/page.js",
   "/termos-de-uso/page": "app/termos-de-uso/page.js"
 }

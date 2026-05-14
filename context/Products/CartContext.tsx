@@ -101,17 +101,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const clearCart = () => setItems([]);
 
-  const value: CartContextValue = {
-    items,
-    totalItems,
-    totalPrice,
-    addItem,
-    removeItem,
-    increase,
-    decrease,
-    setQuantity,
-    clearCart,
-  };
+  const value = useMemo(
+    () => ({
+      items,
+      totalItems,
+      totalPrice,
+      addItem,
+      removeItem,
+      increase,
+      decrease,
+      setQuantity,
+      clearCart,
+    }),
+    [items, totalItems, totalPrice]
+  );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
 }

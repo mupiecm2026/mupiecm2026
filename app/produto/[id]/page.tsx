@@ -28,6 +28,7 @@ import { useCart } from "../../../context/Products/CartContext";
 import { useAuth } from "../../../context/Authentication/AuthContext";
 import { getFavorites, toggleFavorite, isProductFavorited } from "../../../lib/utils/favorites";
 import { logger } from "../../../lib/utils/logger";
+import { useTranslatedText } from "../../../lib/utils/translation";
 import ProductCard from "../../../components/Products/ProductCard";
 
 const defaultSimilarProducts = [
@@ -96,7 +97,7 @@ export default function ProductDetails() {
           .map((item: any) => ({
             id: item.id,
             title: item.title,
-            price: item.price,
+            price: (item.price || 0) * 8,
             image: item.images?.[0] || item.thumbnail || "/placeholder.png",
           }));
         if (items.length) setSimilarProducts(items);
@@ -166,6 +167,8 @@ export default function ProductDetails() {
     setIsFavorited((current) => !current);
   };
 
+  const translatedTitle = useTranslatedText(product?.title || "", "pt");
+  const translatedDescription = useTranslatedText(product?.description || "", "pt");
   const hasSizes = Array.isArray(product?.sizes) && product.sizes.length > 0;
 
   useLayoutEffect(() => {
@@ -208,7 +211,7 @@ export default function ProductDetails() {
             <MuiLink component={Link} href="/categoria" underline="hover">
               {product.category}
             </MuiLink>
-            <Typography color="text.primary">{product.title}</Typography>
+            <Typography color="text.primary">{translatedTitle}</Typography>
           </Breadcrumbs>
 
           <Grid container spacing={4}>
@@ -303,7 +306,7 @@ export default function ProductDetails() {
               <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1, flexWrap: "wrap", gap: 1 }}>
                 <Box>
                   <Typography variant="h4" sx={{ fontWeight: 600 }}>
-                    {product.title}
+                    {translatedTitle}
                   </Typography>
                   {product.sku && (
                     <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
@@ -413,7 +416,7 @@ export default function ProductDetails() {
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography color="text.secondary">{product.description}</Typography>
+                    <Typography color="text.secondary">{translatedDescription}</Typography>
                   </AccordionDetails>
                 </Accordion>
               </Box>

@@ -1,6 +1,6 @@
 // src\context\ThemeContext.tsx
 "use client";
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { createContext, useContext, useEffect, useMemo, useState, ReactNode } from "react";
 import { ThemeProvider as MuiThemeProvider, createTheme } from "@mui/material/styles";
 
 type ThemeMode = "light" | "dark";
@@ -38,24 +38,28 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [mode]);
 
-  const muiTheme = createTheme({
-    palette: {
-      mode,
-      primary: { main: "#2D9CDB" },
-      secondary: { main: "#27AE60" },
-      error: { main: "#EB5757" },
-      warning: { main: "#F2994A" },
-      background: {
-        default: mode === "light" ? "#ebebeb" : "#121212",
-        paper: mode === "light" ? "#FFFFFF" : "#1E1E1E",
-      },
-      text: {
-        primary: mode === "light" ? "#1A1A1A" : "#F5F5DC",
-        secondary: mode === "light" ? "#555555" : "#CCCCCC",
-      },
-    },
-    typography: { fontFamily: "Inter, sans-serif" },
-  });
+  const muiTheme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          mode,
+          primary: { main: "#2D9CDB" },
+          secondary: { main: "#27AE60" },
+          error: { main: "#EB5757" },
+          warning: { main: "#F2994A" },
+          background: {
+            default: mode === "light" ? "#ebebeb" : "#121212",
+            paper: mode === "light" ? "#FFFFFF" : "#1E1E1E",
+          },
+          text: {
+            primary: mode === "light" ? "#1A1A1A" : "#F5F5DC",
+            secondary: mode === "light" ? "#555555" : "#CCCCCC",
+          },
+        },
+        typography: { fontFamily: "Inter, sans-serif" },
+      }),
+    [mode]
+  );
 
   return (
     <ThemeContext.Provider value={{ mode, toggleTheme }}>

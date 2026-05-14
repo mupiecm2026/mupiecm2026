@@ -8,10 +8,13 @@ import {
   IconButton,
   Typography,
   useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Image from "next/image";
 import banner from "../../public/banner.png";
+import bannermbl from "../../public/bannermbl.png";
+
 
 type Props = {
   logoSrc?: string;
@@ -51,6 +54,8 @@ export default function HeroSearch({
     [theme.palette.background]
   );
 
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <Box
       sx={{
@@ -71,12 +76,12 @@ export default function HeroSearch({
         }}
       >
         <Image
-          src={banner}
+          src={isMobile ? bannermbl : banner}
           alt="Banner Mupi"
           fill
           priority
           style={{
-            objectFit: "cover",
+            objectFit: isMobile ? "contain" : "cover",
           }}
         />
 

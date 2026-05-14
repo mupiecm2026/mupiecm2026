@@ -1,4 +1,6 @@
+// app/page.tsx
 "use client";
+
 import React, { useEffect, useMemo, useState } from "react";
 import {
   Container,
@@ -6,7 +8,7 @@ import {
   Box,
   Typography,
   Grid,
-  FormControl,
+ FormControl,
   InputLabel,
   Select,
   MenuItem,
@@ -14,145 +16,207 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+
 import CategoryCarousel from "../components/Products/CategoryCarousel";
 import HeroSearch from "../components/Layout/HeroSearch";
 import ProductFilters from "../components/Products/ProductFilters";
 
-/**
- * Página Home
- * - busca produtos da API pública
- * - exibe HeroSearch acima da listagem
- * - filtra produtos por nome, categoria, preço
- * - ordenação e paginação
- */
-
 export default function HomePage() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [query, setQuery] = useState<string>("");
 
-  // Filters
+  const [query, setQuery] = useState("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 10000]);
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const EXCLUDED_CATEGORIES = ["groceries", "furniture" ];
-
-  // Sorting
-  const [sortBy, setSortBy] = useState<string>("title");
-
-  // Pagination
+  const [sortBy, setSortBy] = useState("title");
   const [page, setPage] = useState(1);
-  const itemsPerPage = 20;
+
+  const ITEMS_PER_CATEGORY = 8;
+
+  const EXCLUDED_CATEGORIES = ["groceries", "furniture"];
 
   const productsUrl = `${process.env.NEXT_PUBLIC_PRODUCTS_URL}/products?limit=200`;
 
   useEffect(() => {
+    let mounted = true;
+
     const loadProducts = async () => {
-      setLoading(true);
-      setError(null);
-
-      if (!productsUrl) {
-        setError("A URL dos produtos não está configurada.");
-        setLoading(false);
-        return;
-      }
-
-      const cacheKey = "mupi_products_cache_v1";
       try {
-        if (typeof window !== "undefined") {
+        setLoading(true);
+        setError(null);
+
+        if (!productsUrl) {
+          setError("A URL dos produtos não está configurada.");
+          return;
+        }
+
+        const cacheKey = "mupi_products_cache_v2";
+
+        try {
           const cached = sessionStorage.getItem(cacheKey);
-          if (cached) {
+
+          if (cached && mounted) {
             setProducts(JSON.parse(cached));
           }
+        } catch {}
+
+        const res = await fetch(productsUrl);
+
+        if (!res.ok) {
+          throw new Error("Erro ao carregar produtos");
         }
-      } catch (cacheErr) {
-        console.warn("Falha ao ler cache de produtos:", cacheErr);
-      }
 
-      try {
-        const res = await fetch(productsUrl, { cache: "force-cache" });
-        const data: any = await res.json();
-        const mapped = (data.products || []).map((p: any) => ({
-          id: p.id,
-          title: p.title,
-          description: p.description,
-          price: p.price,
-          image: p.thumbnail || p.images?.[0] || null,
-          category: p.category,
-          raw: p,
-        }));
+        const data : any = await res.json();
 
-        const visibleProducts = mapped.filter((product: any) => {
-          const category = String(product.category || "").toLowerCase();
-          return !EXCLUDED_CATEGORIES.includes(category);
-        });
+        const mapped = (data.products || [])
+          .map((p: any) => ({
+            id: p.id,
+            title: p.title,
+            description: p.description,
+            price: (p.price || 0) * 8,
+            image: p.thumbnail || p.images?.[0] || null,
+            category: p.category,
+            raw: p,
+          }))
+          .filter((product: any) => {
+            const category = String(product.category || "").toLowerCase();
 
-        setProducts(visibleProducts);
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem(cacheKey, JSON.stringify(visibleProducts));
-        }
+            return !EXCLUDED_CATEGORIES.includes(category);
+          });
+
+        if (!mounted) return;
+
+        setProducts(mapped);
+
+        try {
+          sessionStorage.setItem(cacheKey, JSON.stringify(mapped));
+        } catch {}
       } catch (err) {
         console.error(err);
-        setError("Não foi possível carregar os produtos");
+
+        if (mounted) {
+          setError("Não foi possível carregar os produtos.");
+        }
       } finally {
-        setLoading(false);
+        if (mounted) {
+          setLoading(false);
+        }
       }
     };
 
     loadProducts();
+
+    return () => {
+      mounted = false;
+    };
   }, [productsUrl]);
 
-  // Get unique categories
   const categories = useMemo(() => {
-    const cats = [...new Set(products.map(p => p.category))];
-    return cats.filter(Boolean).filter((category) => {
-      const value = String(category || "").toLowerCase();
-      return !EXCLUDED_CATEGORIES.includes(value);
-    });
+    return [...new Set(products.map((p) => p.category))]
+      .filter(Boolean)
+      .sort((a, b) => String(a).localeCompare(String(b)));
   }, [products]);
 
-  // Filter and sort products
   const filteredAndSorted = useMemo(() => {
-    let filtered = products.filter((p: any) => {
-      const matchesQuery = !query.trim() ||
-        String(p.title || "").toLowerCase().includes(query.trim().toLowerCase());
-      const matchesCategory = selectedCategories.length === 0 ||
+    const filtered = products.filter((p: any) => {
+      const matchesQuery =
+        !query.trim() ||
+        String(p.title || "")
+          .toLowerCase()
+          .includes(query.trim().toLowerCase());
+
+      const matchesCategory =
+        selectedCategories.length === 0 ||
         selectedCategories.includes(p.category);
-      const matchesPrice = p.price >= priceRange[0] && p.price <= priceRange[1];
+
+      const matchesPrice =
+        p.price >= priceRange[0] && p.price <= priceRange[1];
 
       return matchesQuery && matchesCategory && matchesPrice;
     });
 
-    // Sort
     filtered.sort((a, b) => {
       switch (sortBy) {
         case "price-asc":
           return a.price - b.price;
+
         case "price-desc":
           return b.price - a.price;
+
         case "title":
         default:
-          return String(a.title || "").localeCompare(String(b.title || ""));
+          return String(a.title || "").localeCompare(
+            String(b.title || "")
+          );
       }
     });
 
     return filtered;
   }, [products, query, selectedCategories, priceRange, sortBy]);
 
-  // Paginate
-  const paginatedProducts = useMemo(() => {
-    const start = (page - 1) * itemsPerPage;
-    return filteredAndSorted.slice(start, start + itemsPerPage);
-  }, [filteredAndSorted, page]);
+  const groupedCategories = useMemo(() => {
+    const grouped = new Map<string, any[]>();
 
-  const totalPages = Math.ceil(filteredAndSorted.length / itemsPerPage);
+    for (const product of filteredAndSorted) {
+      const category = String(product.category || "Sem categoria");
 
-  // Handlers
+      if (!grouped.has(category)) {
+        grouped.set(category, []);
+      }
+
+      grouped.get(category)!.push(product);
+    }
+
+    return grouped;
+  }, [filteredAndSorted]);
+
+  const paginatedCategories = useMemo(() => {
+    const result: {
+      category: string;
+      items: any[];
+    }[] = [];
+
+    for (const [category, items] of groupedCategories.entries()) {
+      const start = (page - 1) * ITEMS_PER_CATEGORY;
+      const end = start + ITEMS_PER_CATEGORY;
+
+      const sliced = items.slice(start, end);
+
+      if (sliced.length > 0) {
+        result.push({
+          category,
+          items: sliced,
+        });
+      }
+    }
+
+    return result;
+  }, [groupedCategories, page]);
+
+  const totalPages = useMemo(() => {
+    let maxPages = 1;
+
+    for (const items of groupedCategories.values()) {
+      const pages = Math.ceil(items.length / ITEMS_PER_CATEGORY);
+
+      if (pages > maxPages) {
+        maxPages = pages;
+      }
+    }
+
+    return maxPages;
+  }, [groupedCategories]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [query, selectedCategories, priceRange, sortBy]);
+
   const handleClearFilters = () => {
     setSelectedCategories([]);
     setPriceRange([0, 10000]);
@@ -166,14 +230,13 @@ export default function HomePage() {
 
   return (
     <Container maxWidth="xl" sx={{ py: 4, maxWidth: 1400 }}>
-      {/* Hero com logo + barra de busca */}
       <HeroSearch
         logoSrc="/logo.png"
         title="Mupi"
         subtitle="Encontre os melhores dispositivos e acessórios"
         placeholder="Pesquisar por nome do produto..."
         onSearch={(q) => setQuery(q)}
-        preferLogoBehind={true}
+        preferLogoBehind
       />
 
       {loading ? (
@@ -185,13 +248,13 @@ export default function HomePage() {
           <Typography variant="h6" sx={{ mb: 1 }}>
             {error}
           </Typography>
+
           <Typography variant="body2" color="text.secondary">
-            Tente recarregar a página ou verifique sua conexão.
+            Tente novamente mais tarde.
           </Typography>
         </Box>
       ) : (
         <Grid container spacing={4}>
-          {/* Filters Sidebar */}
           {!isMobile && (
             <Grid item md={3}>
               <ProductFilters
@@ -207,9 +270,7 @@ export default function HomePage() {
             </Grid>
           )}
 
-          {/* Main Content */}
           <Grid item xs={12} md={9}>
-            {/* Mobile Filters Toggle */}
             {isMobile && (
               <ProductFilters
                 categories={categories}
@@ -223,14 +284,25 @@ export default function HomePage() {
               />
             )}
 
-            {/* Sorting and Results Count */}
-            <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 3, flexWrap: "wrap", gap: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 3,
+                flexWrap: "wrap",
+                gap: 2,
+              }}
+            >
               <Typography variant="body2" color="text.secondary">
-                {filteredAndSorted.length} produto{filteredAndSorted.length !== 1 ? "s" : ""} encontrado{filteredAndSorted.length !== 1 ? "s" : ""}
+                {filteredAndSorted.length} produto
+                {filteredAndSorted.length !== 1 ? "s" : ""} encontrado
+                {filteredAndSorted.length !== 1 ? "s" : ""}
               </Typography>
 
               <FormControl size="small" sx={{ minWidth: 200 }}>
                 <InputLabel>Classificar por</InputLabel>
+
                 <Select
                   value={sortBy}
                   label="Classificar por"
@@ -243,18 +315,31 @@ export default function HomePage() {
               </FormControl>
             </Box>
 
-            {/* Products Grid */}
-            <CategoryCarousel products={paginatedProducts} cardWidth={260} gap={16} />
+            <CategoryCarousel
+              categories={paginatedCategories}
+              cardWidth={260}
+              gap={16}
+            />
 
-            {/* Pagination */}
             {totalPages > 1 && (
-              <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  mt: 4,
+                }}
+              >
                 <Pagination
+                  color="primary"
                   count={totalPages}
                   page={page}
                   onChange={handlePageChange}
-                  color="primary"
-                  size={isMobile ? "small" : "medium"}
+                  sx={{
+                    "& .Mui-selected": {
+                      backgroundColor: "#22c55e !important",
+                      color: "#fff",
+                    },
+                  }}
                 />
               </Box>
             )}

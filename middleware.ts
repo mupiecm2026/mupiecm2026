@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createKVStore } from "./lib/services/kv/kv-store.factory";
+import { verifyJWT } from "./lib/helpers/jwtHelper";
 
-const PUBLIC_PATHS = [
+const PUBLIC_PATHS = new Set([
   "/",
   "/checkout",
   "/not-found",
@@ -9,63 +9,83 @@ const PUBLIC_PATHS = [
   "/politica-devolucao",
   "/produto",
   "/favoritos",
-];
+  "/politica-troca-cancelamento",
+]);
 
 const MASTER_PATHS = ["/config-page", "/dashboard", "/cashback"];
 
-function isPublic(path: string) {
-  return PUBLIC_PATHS.some(p => path === p || path.startsWith(p + "/"));
-}
-
-function isMaster(path: string) {
-  return MASTER_PATHS.some(p => path === p || path.startsWith(p + "/"));
-}
-
-async function validateSession(token: string): Promise<{ role: string } | null> {
-  try {
-    const env = (globalThis as any).__ENV__ || (globalThis as any).process?.env || null;
-    const kv = await createKVStore(env);
-    const raw = await kv.get(`session:${token}`);
-    
-    if (!raw) return null;
-    
-    const session = JSON.parse(raw);
-    if (session.expiresAt && new Date(session.expiresAt) <= new Date()) {
-      await kv.delete(`session:${token}`);
-      return null;
-    }
-    
-    return { role: session.role };
-  } catch (error) {
-    console.error('Session validation error:', error);
-    return null;
+function isPublic(pathname: string): boolean {
+  if (PUBLIC_PATHS.has(pathname)) {
+    return true;
   }
+
+  return [...PUBLIC_PATHS]
+    .filter(path => path !== "/")
+    .some(path => pathname.startsWith(path + "/"));
+}
+
+function isMaster(pathname: string): boolean {
+  return MASTER_PATHS.some(
+    path => pathname === path || pathname.startsWith(path + "/")
+  );
 }
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  if (isPublic(pathname) || pathname.startsWith("/api/")) {
+  // Ignore internal/static/api
+  if (
+    pathname.startsWith("/_next") ||
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/static") ||
+    pathname.includes(".")
+  ) {
     return NextResponse.next();
   }
 
+  // Public routes
+  if (isPublic(pathname)) {
+    return NextResponse.next();
+  }
+
+  // Read token
   const token = request.cookies.get("mupi_session")?.value;
+
   if (!token) {
+    // console.log("🔐 MIDDLEWARE: Missing token");
+
     return NextResponse.redirect(new URL("/", request.url));
   }
 
-  const session = await validateSession(token);
-  if (!session) {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+  try {
+    const payload = await verifyJWT(token);
 
-  if (isMaster(pathname) && session.role !== "master") {
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+    const role = String(payload.role || "");
 
-  return NextResponse.next();
+    // Protect master routes
+    if (isMaster(pathname) && role !== "master") {
+      // console.log(
+      //   `🔐 MIDDLEWARE: Access denied for role "${role}" on "${pathname}"`
+      // );
+
+      return NextResponse.redirect(new URL("/", request.url));
+    }
+
+    return NextResponse.next();
+  } catch (error) {
+    console.error(
+      // "🔐 MIDDLEWARE: Invalid token",
+      error instanceof Error ? error.message : error
+    );
+
+    const response = NextResponse.redirect(new URL("/", request.url));
+
+    response.cookies.delete("mupi_session");
+
+    return response;
+  }
 }
 
 export const config = {
-  matcher: ["/((?!_next|static|favicon.ico|api).*)"],
+  matcher: ["/:path*"],
 };

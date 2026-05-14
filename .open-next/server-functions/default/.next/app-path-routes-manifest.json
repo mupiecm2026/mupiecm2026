@@ -9,6 +9,7 @@
   "/api/cashback/list/route": "/api/cashback/list",
   "/api/cashback/verify/route": "/api/cashback/verify",
   "/api/cron/route": "/api/cron",
+  "/api/debug/session/route": "/api/debug/session",
   "/api/health/gateway/route": "/api/health/gateway",
   "/api/health/psp/efipay/route": "/api/health/psp/efipay",
   "/api/nf/download/route": "/api/nf/download",
@@ -25,6 +26,7 @@
   "/not-found/page": "/not-found",
   "/page": "/",
   "/politica-devolucao/page": "/politica-devolucao",
+  "/politica-troca-cancelamento/page": "/politica-troca-cancelamento",
   "/produto/[id]/page": "/produto/[id]",
   "/termos-de-uso/page": "/termos-de-uso"
 }

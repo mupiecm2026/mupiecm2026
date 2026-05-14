@@ -60,7 +60,7 @@ export default function CartDrawer({ open, onClose }: { open: boolean; onClose: 
           ) : (
             <List>
               {items.map((it) => (
-                <ListItem key={it.id} sx={{ alignItems: "flex-start", py: 2, borderBottom: (theme) => `2px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}` }}>
+                <ListItem key={it.id} sx={{ alignItems: "flex-start", py: 2, borderBottom: (theme) => `1px solid ${theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.3)'}` }}>
                   <ListItemAvatar>
                     <Avatar variant="rounded" src={it.image ?? undefined} sx={{ width: 64, height: 64 }} />
                   </ListItemAvatar>

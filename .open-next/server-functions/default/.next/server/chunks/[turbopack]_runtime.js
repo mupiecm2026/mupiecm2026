@@ -911,19 +911,19 @@ module.exports = (sourcePath)=>({
   function requireChunk(chunkPath) {
     switch(chunkPath) {
       case "server/chunks/ssr/[root-of-the-server]__0.zquoa._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__0.zquoa._.js");
-      case "server/chunks/ssr/[root-of-the-server]__0lt6la2._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__0lt6la2._.js");
+      case "server/chunks/ssr/[root-of-the-server]__03noyw6._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__03noyw6._.js");
       case "server/chunks/ssr/[root-of-the-server]__0nvfvg7._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__0nvfvg7._.js");
       case "server/chunks/ssr/[turbopack]_runtime.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[turbopack]_runtime.js");
       case "server/chunks/ssr/_04lgp3i._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_04lgp3i._.js");
       case "server/chunks/ssr/_next-internal_server_app__not-found_page_actions_0eq97pa.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app__not-found_page_actions_0eq97pa.js");
       case "server/chunks/ssr/app_layout_tsx_00b23o6._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/app_layout_tsx_00b23o6._.js");
-      case "server/chunks/ssr/node_modules_0eypa-f._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_0eypa-f._.js");
-      case "server/chunks/ssr/node_modules_0u_.dw8._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_0u_.dw8._.js");
+      case "server/chunks/ssr/node_modules_0q3txc-._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_0q3txc-._.js");
+      case "server/chunks/ssr/node_modules_0tsnko8._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_0tsnko8._.js");
       case "server/chunks/ssr/node_modules_111fyja._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_111fyja._.js");
       case "server/chunks/ssr/node_modules_@mui_051epbv._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_051epbv._.js");
-      case "server/chunks/ssr/node_modules_@mui_063066z._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_063066z._.js");
       case "server/chunks/ssr/node_modules_@mui_0qu44ox._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_0qu44ox._.js");
       case "server/chunks/ssr/node_modules_@mui_0r.zq~4._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_0r.zq~4._.js");
+      case "server/chunks/ssr/node_modules_@mui_0rlp-ew._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_0rlp-ew._.js");
       case "server/chunks/ssr/node_modules_@mui_material_0w199lu._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_material_0w199lu._.js");
       case "server/chunks/ssr/node_modules_next_0w2y7fz._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_0w2y7fz._.js");
       case "server/chunks/ssr/node_modules_next_dist_03p1s9l._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_dist_03p1s9l._.js");
@@ -941,18 +941,18 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0rc3ul_.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0rc3ul_.js");
       case "server/chunks/[externals]_fs_0eo4gmu._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[externals]_fs_0eo4gmu._.js");
       case "server/chunks/[externals]_path_0.09pfe._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[externals]_path_0.09pfe._.js");
-      case "server/chunks/[root-of-the-server]__0mwj1cm._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0mwj1cm._.js");
+      case "server/chunks/[root-of-the-server]__0mo~ojw._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0mo~ojw._.js");
       case "server/chunks/[root-of-the-server]__0op9af~._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0op9af~._.js");
       case "server/chunks/[turbopack]_runtime.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[turbopack]_runtime.js");
       case "server/chunks/_next-internal_server_app_api_auth_login_route_actions_0zukc38.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_auth_login_route_actions_0zukc38.js");
+      case "server/chunks/lib_helpers_jwtHelper_ts_02dhjau._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/lib_helpers_jwtHelper_ts_02dhjau._.js");
       case "server/chunks/node_modules_next_04~_e52._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/node_modules_next_04~_e52._.js");
-      case "server/chunks/[root-of-the-server]__0~1~28~._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0~1~28~._.js");
+      case "server/chunks/[root-of-the-server]__0w7d~3b._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0w7d~3b._.js");
       case "server/chunks/_next-internal_server_app_api_auth_logout_route_actions_0fm~3ij.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_auth_logout_route_actions_0fm~3ij.js");
-      case "server/chunks/node_modules_next_03e_drb._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/node_modules_next_03e_drb._.js");
-      case "server/chunks/node_modules_next_0fty6oe._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/node_modules_next_0fty6oe._.js");
-      case "server/chunks/[root-of-the-server]__0xtotbg._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0xtotbg._.js");
+      case "server/chunks/[externals]_next_dist_0arv.vj._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[externals]_next_dist_0arv.vj._.js");
       case "server/chunks/_next-internal_server_app_api_auth_me_route_actions_0q2btsk.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_auth_me_route_actions_0q2btsk.js");
-      case "server/chunks/[root-of-the-server]__06-z9ow._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__06-z9ow._.js");
+      case "server/chunks/node_modules_next_0pm~rgo._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/node_modules_next_0pm~rgo._.js");
+      case "server/chunks/[root-of-the-server]__0_1psmv._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0_1psmv._.js");
       case "server/chunks/_next-internal_server_app_api_auth_register_route_actions_096_y_i.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_auth_register_route_actions_096_y_i.js");
       case "server/chunks/[root-of-the-server]__0dbwp_1._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0dbwp_1._.js");
       case "server/chunks/_next-internal_server_app_api_cashback_cashout_route_actions_0ofn49s.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_cashback_cashout_route_actions_0ofn49s.js");
@@ -962,6 +962,8 @@ module.exports = (sourcePath)=>({
       case "server/chunks/_next-internal_server_app_api_cashback_verify_route_actions_0tknj3e.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_cashback_verify_route_actions_0tknj3e.js");
       case "server/chunks/[root-of-the-server]__0ia.3je._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0ia.3je._.js");
       case "server/chunks/_next-internal_server_app_api_cron_route_actions_09_d3bl.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_cron_route_actions_09_d3bl.js");
+      case "server/chunks/[root-of-the-server]__0v50_uz._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0v50_uz._.js");
+      case "server/chunks/_next-internal_server_app_api_debug_session_route_actions_0l7~mtw.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_debug_session_route_actions_0l7~mtw.js");
       case "server/chunks/[root-of-the-server]__0b654f9._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0b654f9._.js");
       case "server/chunks/[root-of-the-server]__0tor~pb._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/[root-of-the-server]__0tor~pb._.js");
       case "server/chunks/_next-internal_server_app_api_health_gateway_route_actions_0ghvt0d.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/_next-internal_server_app_api_health_gateway_route_actions_0ghvt0d.js");
@@ -1013,7 +1015,7 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_06aqkc..js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_06aqkc..js");
       case "server/chunks/ssr/[root-of-the-server]__0ouu~81._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__0ouu~81._.js");
       case "server/chunks/ssr/_031f56u._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_031f56u._.js");
-      case "server/chunks/ssr/_0gcc2gu._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_0gcc2gu._.js");
+      case "server/chunks/ssr/_0556_j3._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_0556_j3._.js");
       case "server/chunks/ssr/_0hnpqbc._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_0hnpqbc._.js");
       case "server/chunks/ssr/_next-internal_server_app_page_actions_09-gtaw.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app_page_actions_09-gtaw.js");
       case "server/chunks/ssr/node_modules_@mui_0.hii6m._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_@mui_0.hii6m._.js");
@@ -1022,6 +1024,10 @@ module.exports = (sourcePath)=>({
       case "server/chunks/ssr/_next-internal_server_app_politica-devolucao_page_actions_049_w~a.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app_politica-devolucao_page_actions_049_w~a.js");
       case "server/chunks/ssr/app_politica-devolucao_page_tsx_0qcupti._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/app_politica-devolucao_page_tsx_0qcupti._.js");
       case "server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0tdsicn.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0tdsicn.js");
+      case "server/chunks/ssr/[root-of-the-server]__0rd6vlk._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__0rd6vlk._.js");
+      case "server/chunks/ssr/_next-internal_server_app_politica-troca-cancelamento_page_actions_02k5cay.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_next-internal_server_app_politica-troca-cancelamento_page_actions_02k5cay.js");
+      case "server/chunks/ssr/app_politica-troca-cancelamento_page_tsx_137am1-._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/app_politica-troca-cancelamento_page_tsx_137am1-._.js");
+      case "server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0dcdjj..js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/node_modules_next_dist_esm_build_templates_app-page_0dcdjj..js");
       case "server/chunks/ssr/[root-of-the-server]__065q8a3._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/[root-of-the-server]__065q8a3._.js");
       case "server/chunks/ssr/_0-8ivoy._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_0-8ivoy._.js");
       case "server/chunks/ssr/_08uqxj.._.js": return require("/mnt/c/Repos/mupi/.open-next/server-functions/default/.next/server/chunks/ssr/_08uqxj.._.js");

@@ -64,7 +64,7 @@ export default function Navbar() {
           {/* Ícones agrupados na direita */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton onClick={toggleTheme} color="inherit">
-              {mode === "light" ? <Brightness4 /> : <Brightness7 />}
+              {mode === "light" ? <Brightness7 /> : <Brightness4 />}
             </IconButton>
 
             {isMobile ? (
@@ -108,6 +108,12 @@ export default function Navbar() {
         <Box sx={{ width: 250, p: 2 }}>
           <Typography variant="h6" sx={{ mb: 2 }}>Menu</Typography>
           <List>
+            <ListItem button onClick={() => { setLoginOpen(true); setMenuOpen(false); }}>
+              <ListItemIcon>
+                <Person />
+              </ListItemIcon>
+              <ListItemText primary={user ? "Perfil" : "Login"} />
+            </ListItem>
             <ListItem button onClick={() => { setDrawerOpen(true); setMenuOpen(false); }}>
               <ListItemIcon>
                 <Badge badgeContent={totalItems} color="success">
@@ -124,12 +130,6 @@ export default function Navbar() {
                 <ListItemText primary="Favoritos" />
               </ListItem>
             )}
-            <ListItem button onClick={() => { setLoginOpen(true); setMenuOpen(false); }}>
-              <ListItemIcon>
-                <Person />
-              </ListItemIcon>
-              <ListItemText primary={user ? "Perfil" : "Login"} />
-            </ListItem>
           </List>
         </Box>
       </Drawer>

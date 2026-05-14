@@ -33,5 +33,15 @@
       }
     },
     "psps": {}
+  },
+  "user:mupi@gmail.com": {
+    "value": {
+      "email": "mupi@gmail.com",
+      "passwordHash": "NGIrTKAKXQHrQtxJRK6UxTg7nDtp8XWNN2/FHrtgNeA=",
+      "salt": "df0725313f9f40fa",
+      "role": "master",
+      "createdAt": "2026-05-13T22:00:40.922Z"
+    },
+    "expiresAt": null
   }
 }

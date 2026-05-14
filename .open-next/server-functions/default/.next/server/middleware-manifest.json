@@ -3,23 +3,23 @@
   "middleware": {
     "/": {
       "files": [
-        "server/edge/chunks/[root-of-the-server]__0l94rss._.js",
+        "server/edge/chunks/[root-of-the-server]__0fq~heb._.js",
         "server/edge/chunks/node_modules_next_dist_0n25bb8._.js",
-        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_08xffoi.js"
+        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0p3n2om.js"
       ],
       "name": "middleware",
       "page": "/",
-      "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_08xffoi.js",
+      "entrypoint": "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_0p3n2om.js",
       "matchers": [
         {
-          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next|static|favicon.ico|api).*))(\\\\.json)?[\\/#\\?]?$",
-          "originalSource": "/((?!_next|static|favicon.ico|api).*)"
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?:[^\\/#\\?]+?)(?:\\/(?:[^\\/#\\?]+?))*))?(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/:path*"
         }
       ],
       "wasm": [],
       "assets": [],
       "env": {
-        "__NEXT_BUILD_ID": "Q7PImi2ueX3YLNQQlIWEC",
+        "__NEXT_BUILD_ID": "KzPAKJzeQYnXZOpUC9sss",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "WhYcL+7rrg0jKqIRoUDwDcJDqhnDj8z3JHZwAoTTGCc=",
         "__NEXT_PREVIEW_MODE_ID": "27a4e6a992671ff0e010ab38ba3fc7db",
         "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "3e5a8b301027fe191d04409a4710a0d6fd6a47de73a1e61f172945d21f17870a",
@@ -63,7 +63,7 @@
         }
       ],
       "env": {
-        "__NEXT_BUILD_ID": "Q7PImi2ueX3YLNQQlIWEC",
+        "__NEXT_BUILD_ID": "KzPAKJzeQYnXZOpUC9sss",
         "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "WhYcL+7rrg0jKqIRoUDwDcJDqhnDj8z3JHZwAoTTGCc=",
         "__NEXT_PREVIEW_MODE_ID": "27a4e6a992671ff0e010ab38ba3fc7db",
         "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "3e5a8b301027fe191d04409a4710a0d6fd6a47de73a1e61f172945d21f17870a",

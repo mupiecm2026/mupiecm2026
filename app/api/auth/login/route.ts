@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { authService } from "../../../../lib/services/auth/auth-service";
-
+import { getSessionCookieOptions } from "../../../../lib/utils/cookie";
+import { createJWT } from "../../../../lib/helpers/jwtHelper";
 
 export async function POST(req: Request) {
   try {
@@ -9,7 +10,10 @@ export async function POST(req: Request) {
       password?: string;
     };
 
-    const email = String(body.email || "").trim().toLowerCase();
+    const email = String(body.email || "")
+      .trim()
+      .toLowerCase();
+
     const password = String(body.password || "");
 
     if (!email || !password) {
@@ -20,22 +24,31 @@ export async function POST(req: Request) {
     }
 
     const user = await authService.verifyUser(email, password);
-    const session = await authService.createSession(user.email);
 
-    const res = NextResponse.json({ user: { email: user.email, role: user.role } });
-
-    res.cookies.set("mupi_session", session.token, {
-      httpOnly: true,
-      sameSite: "strict",
-      path: "/",
-      maxAge: 60 * 60 * 24 * 7,
-      secure: true,
+    const token = await createJWT({
+      email: user.email,
+      role: user.role,
     });
 
-    return res;
+    const response = NextResponse.json({
+      user: {
+        email: user.email,
+        role: user.role,
+      },
+    });
+
+    response.cookies.set(
+      "mupi_session",
+      token,
+      getSessionCookieOptions()
+    );
+
+    return response;
   } catch (error) {
     const message =
-      error instanceof Error ? error.message : "Falha ao autenticar.";
+      error instanceof Error
+        ? error.message
+        : "Falha ao autenticar.";
 
     return NextResponse.json(
       { error: message },

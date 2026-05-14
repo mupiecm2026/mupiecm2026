@@ -32,6 +32,7 @@ const footerLinks = [
       { label: "Política de Privacidade", href: "/not-found" },
       { label: "Termos de Uso", href: "/termos-de-uso" },
       { label: "Política de Devolução", href: "/politica-devolucao" },
+      { label: "Política de Troca e Cancelamento", href: "/politica-troca-cancelamento" },
       { label: "Cookies", href: "/not-found" },
     ],
   },
